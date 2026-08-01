@@ -1,8 +1,7 @@
 # Erdős Problem 263 — Lean 4 formalization (irrationality sequences)
 
 Machine-verified Lean 4 + Mathlib formalizations for
-[Erdős Problem 263](https://www.erdosproblems.com/263) (irrationality sequences),
-by Shubin Sciences AS.
+[Erdős Problem 263](https://www.erdosproblems.com/263) (irrationality sequences)
 
 ## Contents
 
