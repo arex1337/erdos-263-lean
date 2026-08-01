@@ -52,4 +52,4 @@ case — not Q1.
 
 ## License
 
-Apache-2.0 (see `LICENSE`). Copyright 2026 Shubin Sciences AS.
+Apache-2.0 (see `LICENSE`). Copyright 2026 T. Alexander Lystad.

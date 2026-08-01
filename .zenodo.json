@@ -3,7 +3,7 @@
   "description": "Machine-verified Lean 4 + Mathlib formalizations for Erdős Problem 263 (erdosproblems.com/263): a complete zero-sorry proof of the growth criterion for irrationality sequences (liminf a_{n+1}/a_n^{2+ε} > 0 implies the reciprocal sum is irrational for every asymptotic perturbation), a supporting lemma package including the irrationality of ∑ 1/2^{2^n}, and a fidelity-audited formal statement of the problem. Q1 remains open. Verification: lake build (Lean 4.32.2, Mathlib v4.32.2), zero sorry outside the declared open obligation. Developed with AI assistance under a machine-verification gate; see README for verification commands and the statement-fidelity audit.",
   "creators": [
     {
-      "name": "Shubin Sciences AS"
+      "name": "T. Alexander Lystad"
     }
   ],
   "keywords": [
