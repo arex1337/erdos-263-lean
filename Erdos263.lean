@@ -10,3 +10,4 @@ import Erdos263.Erdos1975C
 import Erdos263.Erdos1975D
 import Erdos263.Erdos1975E
 import Erdos263.Erdos1975F
+import Erdos263.FormalConjecturesAdapter
