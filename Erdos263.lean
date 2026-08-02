@@ -8,3 +8,5 @@ import Erdos263.Erdos1975
 import Erdos263.Erdos1975B
 import Erdos263.Erdos1975C
 import Erdos263.Erdos1975D
+import Erdos263.Erdos1975E
+import Erdos263.Erdos1975F

@@ -29,9 +29,14 @@ FIDELITY NOTES (audit gate: compare against the site text above, line by line):
 5. No convergence hypothesis: it is derivable (`summable_one_div_of_gap`,
    and independently `summable_one_div_of_oneSidedGrowth`).
 
-SCOPE / STATUS (see RESULTS.md for the full gap analysis):
-The full folklore theorem (`erdos_263_one_sided_folklore`) is OPEN here and
-stated as a `def` (no proof claimed, no `sorry`). What IS proved zero-sorry:
+SCOPE / STATUS (updated 2026-08-02): the full folklore theorem
+(`erdos_263_one_sided_folklore`) is **PROVED** — zero-sorry in
+`Erdos1975F.lean` (`erdos_263_one_sided_folklore_proof`), via the sorting
+reduction: sort the sequence (non-decreasing rearrangement; the root
+condition transfers by a counting lemma), then apply the monotone theorem
+`irrational_of_oneSidedGrowth_monotone`. The direct product–tail route
+documented below remains of independent interest:
+
 
 * `OneSidedGrowth a → Summable (1/a)` (the hypothesis yields summability);
 * the conditional theorem `irrational_tsum_one_div_of_perNGap`: the
@@ -63,9 +68,11 @@ def OneSidedGrowth (a : ℕ → ℕ) : Prop :=
   (∀ n, 0 < a n) ∧
   Tendsto (fun n => (a n : ℝ) ^ (1 / (2 : ℝ) ^ n)) atTop atTop
 
-/-- **The one-sided folklore form of Erdős #263 (OPEN):** every sequence of
-positive integers with `a_n^{1/2^n} → ∞` has irrational reciprocal sum.
-Stated as a proposition; no side is taken (⚪ candidate, unverified). -/
+/-- **The one-sided folklore form of Erdős #263 (PROVED 2026-08-02):** every
+sequence of positive integers with `a_n^{1/2^n} → ∞` has irrational
+reciprocal sum. PROVED zero-sorry in `Erdos1975F.lean`
+(`erdos_263_one_sided_folklore_proof`) via the sorting reduction
+(sort-then-apply the monotone theorem); see that file for the proof. -/
 def erdos_263_one_sided_folklore : Prop :=
   ∀ a : ℕ → ℕ, OneSidedGrowth a → Irrational (∑' n, 1 / (a n : ℝ))
 
