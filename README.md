@@ -3,8 +3,26 @@
 Machine-verified Lean 4 + Mathlib formalizations for
 [Erdős Problem 263](https://www.erdosproblems.com/263) (irrationality sequences), by Kimi K3 and T. Alexander Lystad
 
+**v1.1 headline (2026-08-02):** `irrational_of_oneSidedGrowth_monotone` —
+**for every monotone sequence of positive integers `a` with
+`a_n^{1/2^n} → ∞`, the sum `∑ 1/a_n` is irrational.** This is Erdős's
+Theorem 1 (J. Math. Sci. 10 (1975), 1–7) at the lim level for monotone
+sequences — to our knowledge (search-based sweep, 2026-08-01) the first
+Lean formalization of this criterion. Zero `sorry`; axioms
+`[propext, Classical.choice, Quot.sound]` only.
+
 ## Contents
 
+- `Erdos263/Erdos1975.lean`, `Erdos1975B.lean`, `Erdos1975C.lean`,
+  `Erdos1975D.lean` — the Erdős-1975 development (41 declarations): the
+  denominator-product recurrence, the integrality machine, the case-(9)
+  spike theorem, the escape-record machinery, and the case-(12) assembly
+  closing in `irrational_of_oneSidedGrowth_monotone`.
+- `Erdos263/OneSided.lean` — fidelity-audited formal statement of the
+  one-sided folklore form plus supporting zero-sorry lemmas (summability,
+  the conditional per-N-gap reduction). The site's literal no-monotonicity
+  form remains **open** — the gap is exactly the `Monotone` hypothesis in
+  the dyadic tail bound.
 - `Erdos263/Folklore.lean` — **`folklore_criterion`**: strictly increasing
   positive integers with `∃ ε > 0, ∃ c > 0, ∀ᶠ n, c·a_n^{2+ε} ≤ a_{n+1}` are
   irrationality sequences (for every `b_n/a_n → 1`, `∑ 1/b_n` is irrational).
@@ -25,31 +43,34 @@ toolchain manager):
 git clone https://github.com/arex1337/erdos-263-lean
 cd erdos-263-lean
 lake exe cache get    # downloads the prebuilt Mathlib cache (~GB, one-time)
-lake build            # expect: Build completed successfully (8659 jobs);
-                      # only warning: Statement.lean:63 declaration uses `sorry`
+lake build            # expect: Build completed successfully (8664 jobs);
+                      # sole sorry-warning: Statement.lean:63 declaration uses `sorry`
                       # (the declared open problem Q1)
 grep -rn "sorry\|admit\|axiom" Erdos263.lean Erdos263/
 # expect: only Statement.lean:64 (the open Q1) plus comment mentions
 ```
 
-The toolchain (`leanprover/lean4:v4.32.2`) and the Mathlib revision (`v4.32.2`)
-are pinned in `lean-toolchain` / `lakefile.toml` / `lake-manifest.json`; elan
-installs the pinned toolchain automatically on the first `lake` command.
+Optional independent axiom check, from a file importing `Erdos263`:
+
+```lean
+#print axioms irrational_of_oneSidedGrowth_monotone
+-- expect: [propext, Classical.choice, Quot.sound]
+```
 
 ## Provenance and verification tier
 
 Developed with AI assistance (LLM agents) under a machine-verification gate:
-clean `lake build`, zero `sorry` outside the declared open obligation, and a
-statement-fidelity audit against erdosproblems.com (the audit table is in
-`Erdos263/Statement.lean`'s header). Lean verifies proofs against the formal
-statement; the fidelity audit comparing the formal statement to the informal
-problem is documented but is not itself machine-checked. AI involvement is
-disclosed per Mathlib/Lean community conventions.
+clean `lake build`, zero `sorry` outside the declared open obligation, and
+statement-fidelity audits against erdosproblems.com and the Erdős 1975 scan
+(renyi.hu). The mapping from the Lean development to Erdős's published
+equation numbers rests on a disclosed human page-image transcription of the
+scan; the Lean statements and proofs themselves are kernel-verified. Lean
+verifies proofs against the formal statement; fidelity audits comparing
+statement to problem are documented but are not themselves machine-checked.
+AI involvement is disclosed per Mathlib/Lean community conventions.
 
-**Status of the problem:** Q1 (is `2^{2^n}` an irrationality sequence?) is open.
-This repository proves the folklore growth *criterion* and the `b_n = a_n` base
-case — not Q1.
+Archived releases: v1.0 https://doi.org/10.5281/zenodo.21736956 ·
+v1.1 https://doi.org/10.5281/zenodo.21752787 ·
+always-latest https://doi.org/10.5281/zenodo.21736955
 
-## License
-
-Apache-2.0 (see `LICENSE`). Copyright 2026 T. Alexander Lystad.
+License: Apache-2.0.
