@@ -3,3 +3,8 @@
 import Erdos263.Statement
 import Erdos263.Basic
 import Erdos263.Folklore
+import Erdos263.OneSided
+import Erdos263.Erdos1975
+import Erdos263.Erdos1975B
+import Erdos263.Erdos1975C
+import Erdos263.Erdos1975D
