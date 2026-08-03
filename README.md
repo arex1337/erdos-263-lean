@@ -3,13 +3,27 @@
 Machine-verified Lean 4 + Mathlib formalizations for
 [Erdős Problem 263](https://www.erdosproblems.com/263) (irrationality sequences), by Kimi K3 and T. Alexander Lystad
 
+**v2.0 headline (2026-08-02):** `erdos_263_one_sided_folklore_proof` —
+**the site's literal folklore form, no monotonicity: every sequence of
+positive integers `a` with `a_n^{1/2^n} → ∞` has irrational reciprocal
+sum.** The proof sorts the sequence (non-decreasing rearrangement; the
+root condition transfers by a counting lemma) and applies the v1.1 monotone
+theorem. We are aware of no prior proof of the no-monotonicity form;
+published proofs (Erdős 1975, Hančl 1993) assume increasing. Zero `sorry`;
+axioms `[propext, Classical.choice, Quot.sound]` only. The limsup analogue
+is false (lim is load-bearing; interleaved-Sylvester counterexample,
+rational sum 3/2).
+
 **v1.1 headline (2026-08-02):** `irrational_of_oneSidedGrowth_monotone` —
 **for every monotone sequence of positive integers `a` with
 `a_n^{1/2^n} → ∞`, the sum `∑ 1/a_n` is irrational.** This is Erdős's
 Theorem 1 (J. Math. Sci. 10 (1975), 1–7) at the lim level for monotone
-sequences — to our knowledge (search-based sweep, 2026-08-01) the first
-Lean formalization of this criterion. Zero `sorry`; axioms
-`[propext, Classical.choice, Quot.sound]` only.
+sequences. Zero `sorry`; axioms
+`[propext, Classical.choice, Quot.sound]` only. *Classical landscape
+note:* Badea's Theorem A (Acta Arith. 63 (1993), 313–323 — the
+fast-growth criterion `a_{n+1} > a_n² − a_n + 1` ⟹ irrational) does NOT
+subsume this case: its condition is pairwise and fails at dip indices,
+which Erdős's record machinery (formalized here) handles.
 
 ## Contents
 
