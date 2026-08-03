@@ -1,42 +1,43 @@
 # Erdős Problem 263 — Lean 4 formalization (irrationality sequences)
 
 Machine-verified Lean 4 + Mathlib formalizations for
-[Erdős Problem 263](https://www.erdosproblems.com/263) (irrationality sequences), by Kimi K3 and T. Alexander Lystad
+[Erdős Problem 263](https://www.erdosproblems.com/263) (irrationality
+sequences). AI-generated Lean proofs. Kimi K3 produced the existing
+development; Codex Proof Forge produced `FormalConjecturesAdapter.lean`.
+T. Alexander Lystad directed and published the work.
 
-**v2.0 headline (2026-08-02):** `erdos_263_one_sided_folklore_proof` —
-**the site's literal folklore form, no monotonicity: every sequence of
-positive integers `a` with `a_n^{1/2^n} → ∞` has irrational reciprocal
-sum.** The proof sorts the sequence (non-decreasing rearrangement; the
-root condition transfers by a counting lemma) and applies the v1.1 monotone
-theorem. We are aware of no prior proof of the no-monotonicity form;
-published proofs (Erdős 1975, Hančl 1993) assume increasing. Zero `sorry`;
-axioms `[propext, Classical.choice, Quot.sound]` only. The limsup analogue
-is false (lim is load-bearing; interleaved-Sylvester counterexample,
-rational sum 3/2).
+**Current headline (2026-08-02):** `formalConjectures_folklore` exactly
+matches the folklore variant in
+`google-deepmind/formal-conjectures` PR #4679:
 
-**v1.1 headline (2026-08-02):** `irrational_of_oneSidedGrowth_monotone` —
-**for every monotone sequence of positive integers `a` with
-`a_n^{1/2^n} → ∞`, the sum `∑ 1/a_n` is irrational.** This is Erdős's
-Theorem 1 (J. Math. Sci. 10 (1975), 1–7) at the lim level for monotone
-sequences. Zero `sorry`; axioms
-`[propext, Classical.choice, Quot.sound]` only. *Classical landscape
-note:* Badea's Theorem A (Acta Arith. 63 (1993), 313–323 — the
-fast-growth criterion `a_{n+1} > a_n² − a_n + 1` ⟹ irrational) does NOT
-subsume this case: its condition is pairwise and fails at dip indices,
-which Erdős's record machinery (formalized here) handles.
+**for every sequence of natural numbers `a` with
+`a_n^{1/2^n} → ∞`, the sum `∑ 1/a_n` is irrational.**
+
+No monotonicity or explicit positivity hypothesis is required. The root-growth
+hypothesis forces eventual positivity; finitely many zero entries are
+normalized to one, the zero-`sorry` no-monotonicity theorem is applied, and
+the finite rational correction is removed. The headline theorem depends only
+on `[propext, Classical.choice, Quot.sound]`.
+
+**Classical landscape note:** Badea's Theorem A (Acta Arith. 63 (1993),
+313-323 — the fast-growth criterion `a_{n+1} > a_n² − a_n + 1` ⟹ irrational,
+no monotonicity needed) does NOT subsume the monotone-lim case: its condition
+is pairwise and fails at dip indices, which Erdős's record machinery
+(formalized here) handles. The no-monotonicity form is beyond both Badea
+(dips) and Erdős (increasing); the sorting lemma is the new ingredient.
 
 ## Contents
 
-- `Erdos263/Erdos1975.lean`, `Erdos1975B.lean`, `Erdos1975C.lean`,
-  `Erdos1975D.lean` — the Erdős-1975 development (41 declarations): the
+- `Erdos263/Erdos1975.lean` through `Erdos1975F.lean` — the Erdős-1975
+  development and sorting argument: the
   denominator-product recurrence, the integrality machine, the case-(9)
   spike theorem, the escape-record machinery, and the case-(12) assembly
-  closing in `irrational_of_oneSidedGrowth_monotone`.
+  closing first in `irrational_of_oneSidedGrowth_monotone` and then in the
+  no-monotonicity theorem `erdos_263_one_sided_folklore_proof`.
+- `Erdos263/FormalConjecturesAdapter.lean` — the exact adapter to the
+  Formal Conjectures theorem type, including finite zero normalization.
 - `Erdos263/OneSided.lean` — fidelity-audited formal statement of the
-  one-sided folklore form plus supporting zero-sorry lemmas (summability,
-  the conditional per-N-gap reduction). The site's literal no-monotonicity
-  form remains **open** — the gap is exactly the `Monotone` hypothesis in
-  the dyadic tail bound.
+  one-sided folklore form plus supporting zero-sorry lemmas.
 - `Erdos263/Folklore.lean` — **`folklore_criterion`**: strictly increasing
   positive integers with `∃ ε > 0, ∃ c > 0, ∀ᶠ n, c·a_n^{2+ε} ≤ a_{n+1}` are
   irrationality sequences (for every `b_n/a_n → 1`, `∑ 1/b_n` is irrational).
@@ -57,34 +58,39 @@ toolchain manager):
 git clone https://github.com/arex1337/erdos-263-lean
 cd erdos-263-lean
 lake exe cache get    # downloads the prebuilt Mathlib cache (~GB, one-time)
-lake build            # expect: Build completed successfully (8664 jobs);
+lake build            # expect: Build completed successfully;
                       # sole sorry-warning: Statement.lean:63 declaration uses `sorry`
                       # (the declared open problem Q1)
-grep -rn "sorry\|admit\|axiom" Erdos263.lean Erdos263/
-# expect: only Statement.lean:64 (the open Q1) plus comment mentions
+lake env lean CheckFormalConjecturesAdapterAxioms.lean
+rg -n '(^|[[:space:]])(sorry|admit)([[:space:]]|$)|^[[:space:]]*axiom[[:space:]]' \
+  Erdos263/FormalConjecturesAdapter.lean
+# expect: no matches
 ```
 
-Optional independent axiom check, from a file importing `Erdos263`:
+The checked axiom report is generated by
+`CheckFormalConjecturesAdapterAxioms.lean`:
 
 ```lean
-#print axioms irrational_of_oneSidedGrowth_monotone
+#print axioms Erdos263.formalConjectures_folklore
 -- expect: [propext, Classical.choice, Quot.sound]
 ```
 
 ## Provenance and verification tier
 
-Developed with AI assistance (LLM agents) under a machine-verification gate:
-clean `lake build`, zero `sorry` outside the declared open obligation, and
-statement-fidelity audits against erdosproblems.com and the Erdős 1975 scan
-(renyi.hu). The mapping from the Lean development to Erdős's published
-equation numbers rests on a disclosed human page-image transcription of the
-scan; the Lean statements and proofs themselves are kernel-verified. Lean
-verifies proofs against the formal statement; fidelity audits comparing
-statement to problem are documented but are not themselves machine-checked.
-AI involvement is disclosed per Mathlib/Lean community conventions.
+The Lean proofs and analysis were AI-generated under human direction and
+checked under a machine-verification gate: successful `lake build` (with 23
+disclosed pre-existing warnings and zero adapter warnings), zero `sorry`
+outside the declared open obligation, and statement-fidelity audits against
+erdosproblems.com and the Erdős 1975 scan (renyi.hu). The mapping from the
+Lean development to Erdős's published equation numbers rests on a disclosed
+human page-image transcription of the scan; the Lean statements and proofs
+themselves are kernel-verified. Lean verifies proofs against the formal
+statement; fidelity audits comparing statement to problem are documented but
+are not themselves machine-checked.
 
 Archived releases: v1.0 https://doi.org/10.5281/zenodo.21736956 ·
 v1.1 https://doi.org/10.5281/zenodo.21752787 ·
+v2.0 https://doi.org/10.5281/zenodo.21760479 ·
 always-latest https://doi.org/10.5281/zenodo.21736955
 
 License: Apache-2.0.
