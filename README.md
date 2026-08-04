@@ -24,7 +24,12 @@ on `[propext, Classical.choice, Quot.sound]`.
 no monotonicity needed) does NOT subsume the monotone-lim case: its condition
 is pairwise and fails at dip indices, which Erdős's record machinery
 (formalized here) handles. The no-monotonicity form is beyond both Badea
-(dips) and Erdős (increasing); the sorting lemma is the new ingredient.
+(dips) and Erdős (increasing). Attribution: the reordering device is Erdős's
+own (1975, Theorem 3: "we did not assume that the sequence is monotonic.
+Reorder it as a monotonic sequence..."), used there for the divisibility
+criterion (order-free, needing no transfer lemma); the genuinely new step
+here is the counting lemma transferring the indexing-dependent root
+condition to the rearrangement.
 
 ## Contents
 
